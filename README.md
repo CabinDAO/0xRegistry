@@ -1,46 +1,45 @@
-# Advanced Sample Hardhat Project
+# Simple TCR
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+A simpler Token Curated Registry implementation using Ethereum smart contracts.
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+This implementation strips out most of the details and only keeps the basic TCR functionality. Consider this to be the "hello world" for TCR implementations.
 
-Try running some of the following tasks:
+Note: Most of the code for this Token Curated Registry implementation is derived from the [generic TCR implementation](https://github.com/skmgoldin/tcr) from Mike Goldin (and the adChain team).
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
+## Why this implementation?
 
-# Etherscan verification
+This TCR implementation is for getting a basic understanding of community driven curation using TCRs. While the [generic implementation](https://github.com/skmgoldin/tcr) is comprehensive and elegant, it is also too advanced to be used for understanding basic token based curation concepts. This simpler implementation strips out all advanced and complex functions and configuration parameters and only includes the basic curation functions - propose, challenge, vote, resolve, claim rewards.
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+## What makes it simple?
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+To keep this TCR implementation simple, following functions and components are not implemented or included.
 
-```shell
-hardhat run --network ropsten scripts/deploy.ts
-```
+1. PLCR voting - Instead of using PLCR voting, we are using just a list of polls and votes. There is no revealing of votes at a later stage. All votes are revealed by default.
+1. Configurable parameters - All TCR parameters are hard-coded. Also, only a subset of parameters are used (min deposit, apply stage length, commit stage length).
+1. Hard-coded rewards formula - The rewards calculation formula for all challenges is the same and is hard-coded as we are not using dispensation percentage and vote quorum parameters.
+1. Only basic curation functions are implemented. Exits, deposit reduction, etc. are not implemented.
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+## When all this is left out, what's still in there?
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
+Good question!
 
-# Performance optimizations
+The following simple flow is implemented here,
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+1. Initialize a TCR with a token
+1. Propose a listing
+1. Challenge an applied/whitelisted listing
+1. Vote on a challenge (without commit-reveal)
+1. Update status of a listing (resolve challenge)
+1. Claim rewards after a challenge is resolved (based on a hard-coded formula)
+
+This basic flow helps understand the concepts of community driven curation using TCRs.
+
+## Structure
+
+The repository follow the structure of a regular truffle app created using `truffle init`. The **contracts** directory has two contracts - `token` and `tcr`. The token contract is derived from the [OpenZeppelin ERC20 contract](https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/contracts/token/ERC20) and the tcr contract has what's described in the sections above. The **test** directory contains positive unit tests for both contracts.
+
+## Important Note
+
+This TCR implementation is only for demo purposes. The solidity smart-contracts in this repository are **not audited** and they should not be used in production scenarios.
+
+For real world (production) usage, please refer to the [generic TCR implementation](https://github.com/skmgoldin/tcr) from [Mike Goldin](https://github.com/skmgoldin) which is also being used in the [adChain registry](https://adchain.com/).
