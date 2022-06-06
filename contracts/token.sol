@@ -1,22 +1,13 @@
-pragma solidity ^0.5.8;
+pragma solidity ^0.8.14;
 
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Token is ERC20 {
-    address public owner;
-
-    string public constant name = "DemoToken";                        // Set the token name for display
-    string public constant symbol = "DTO";                            // Set the token symbol for display
-
-    // SUPPLY
-    uint256 public constant initialSupply = 21000000;                 // Token total supply
+contract Token is ERC20, Ownable {              
 
     // constructor function
-    constructor() public {
-        // set _owner
-        owner = msg.sender;
-
-        // owner of token contract has all tokens
-        _mint(msg.sender, initialSupply);
+    constructor(string memory _name, string memory _symbol, uint256 _initialSupply) ERC20(_name, _symbol) {
+        // initial supply is sent to contract owner
+        _mint(msg.sender, _initialSupply);
     }
 }

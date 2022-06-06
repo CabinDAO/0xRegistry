@@ -4,11 +4,15 @@
 // For real world usage, please refer to the generic TCR implementation
 // https://github.com/skmgoldin/tcr
 
-pragma solidity ^0.8.14;
+pragma solidity ^0.5.8;
+pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Tcr {
+
+    using SafeMath for uint;
 
     struct Listing {
         uint applicationExpiry; // Expiration date of apply stage
@@ -76,7 +80,7 @@ contract Tcr {
         string memory _name,
         address _token,
         uint[] memory _parameters
-    ) {
+    ) public {
         require(_token != address(0), "Token address should not be 0 address.");
 
         token = ERC20(_token);
@@ -145,7 +149,9 @@ contract Tcr {
         listing.arrIndex = listingNames.length - 1;
 
         // Sets apply stage end time
-        listing.applicationExpiry = block.timestamp + applyStageLen;
+        // now or block.timestamp is safe here (can live with ~15 sec approximation)
+        /* solium-disable-next-line security/no-block-members */
+        listing.applicationExpiry = now.add(applyStageLen);
         listing.deposit = _amount;
 
         // Transfer tokens from user
@@ -166,7 +172,8 @@ contract Tcr {
         require(listing.challengeId == 0 || challenges[listing.challengeId].resolved, "Listing is already challenged.");
 
         // check if apply stage is active
-        require(listing.applicationExpiry > block.timestamp, "Apply stage has passed.");
+        /* solium-disable-next-line security/no-block-members */
+        require(listing.applicationExpiry > now, "Apply stage has passed.");
 
         // check if enough amount is staked for challenge
         require(_amount >= listing.deposit, "Not enough stake passed for challenge.");
@@ -181,11 +188,12 @@ contract Tcr {
         });
 
         // create a new poll for the challenge
-        Poll storage poll = polls[pollNonce];
-        poll.votesFor = 0;
-        poll.votesAgainst = 0;
-        poll.passed = false;
-        poll.commitEndDate = block.timestamp + commitStageLen;
+        polls[pollNonce] = Poll({
+            votesFor: 0,
+            votesAgainst: 0,
+            passed: false,
+            commitEndDate: now.add(commitStageLen) /* solium-disable-line security/no-block-members */
+        });
 
         // Updates listingHash to store most recent challenge
         listing.challengeId = pollNonce;
@@ -212,7 +220,8 @@ contract Tcr {
         Poll storage poll = polls[listing.challengeId];
 
         // check if commit stage is active
-        require(poll.commitEndDate > block.timestamp, "Commit period has passed.");
+        /* solium-disable-next-line security/no-block-members */
+        require(poll.commitEndDate > now, "Commit period has passed.");
 
         // Transfer tokens from voter
         require(token.transferFrom(msg.sender, address(this), _amount), "Token transfer failed.");
@@ -241,8 +250,9 @@ contract Tcr {
         // the application period has ended,
         // the listingHash can be whitelisted,
         // and either: the challengeId == 0, or the challenge has been resolved.
+        /* solium-disable */
         if (appWasMade(_listingHash) && 
-            listings[_listingHash].applicationExpiry < block.timestamp && 
+            listings[_listingHash].applicationExpiry < now && 
             !isWhitelisted(_listingHash) &&
             (challengeId == 0 || challenges[challengeId].resolved == true)) {
             return true; 
@@ -266,7 +276,8 @@ contract Tcr {
         Poll storage poll = polls[challengeId];
 
         // check if commit stage is active
-        require(poll.commitEndDate < block.timestamp, "Commit period is active.");
+        /* solium-disable-next-line security/no-block-members */
+        require(poll.commitEndDate < now, "Commit period is active.");
 
         if (poll.votesFor >= poll.votesAgainst) {
             poll.passed = true;
@@ -323,8 +334,8 @@ contract Tcr {
 
         // if winning party, calculate reward and transfer
         if((poll.passed && voteInstance.value) || (!poll.passed && !voteInstance.value)) {
-            uint reward = (challenges[challengeId].rewardPool / challenges[challengeId].totalTokens) * voteInstance.stake;
-            uint total = voteInstance.stake + reward;
+            uint reward = (challenges[challengeId].rewardPool.div(challenges[challengeId].totalTokens)).mul(voteInstance.stake);
+            uint total = voteInstance.stake.add(reward);
             require(token.transfer(msg.sender, total), "Voting reward transfer failed.");
             emit _RewardClaimed(challengeId, total, msg.sender);
         }
