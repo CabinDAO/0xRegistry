@@ -1,0 +1,13 @@
+{
+  "name": "0xregistry",
+  "version": "0.0.1",
+  "description": "Dapp for deploying and managing token-curated registries",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {},
+  "devDependencies": {
+    "ts-node": "^10.8.1"
+  }
+}
