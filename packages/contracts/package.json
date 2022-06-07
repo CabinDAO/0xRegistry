@@ -1,5 +1,11 @@
 {
-  "name": "hardhat-project",
+  "name": "contracts",
+  "version": "0.0.1",
+  "description": "Smart contracts powering the 0xRegistry dapp",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-etherscan": "^3.0.4",
