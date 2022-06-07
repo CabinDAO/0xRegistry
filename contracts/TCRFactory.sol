@@ -14,8 +14,9 @@ contract TcrFactory {
         string memory _name,
         address _token,
         uint[] memory _parameters
-    )  public {
+    )  public returns (address) {
         Tcr tcr  = new Tcr(_name, _token, _parameters);
         tcrRegistry.registerTcr(_name, address(tcr));
+        return address(tcr);
     }
 }
