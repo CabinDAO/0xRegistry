@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.14;
 
-contract TcrRegistry {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract TcrRegistry is Ownable {
     mapping (string => address) public tcrs;
-    function registerTcr(string memory _name, address _address) public {
+    function registerTcr(string memory _name, address _address) onlyOwner public {
         tcrs[_name] = _address;
     }
 
