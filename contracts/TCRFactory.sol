@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.14;
+// SPDX-License-Identifier: MIT
 
 import "./TCR.sol";
 import "./TCRRegistry.sol";
