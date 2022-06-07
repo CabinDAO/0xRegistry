@@ -5,6 +5,7 @@ import "./TCRRegistry.sol";
 
 contract TcrFactory {
     TcrRegistry public tcrRegistry;
+    event TcrCreated(string indexed name, address indexed tcr);
 
     constructor (address registryAddress){
         tcrRegistry = TcrRegistry(registryAddress);
@@ -14,9 +15,9 @@ contract TcrFactory {
         string memory _name,
         address _token,
         uint[] memory _parameters
-    )  public returns (address) {
+    )  public {
         Tcr tcr  = new Tcr(_name, _token, _parameters);
         tcrRegistry.registerTcr(_name, address(tcr));
-        return address(tcr);
+        emit TcrCreated(_name, address(tcr));
     }
 }
