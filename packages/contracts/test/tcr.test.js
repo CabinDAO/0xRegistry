@@ -51,10 +51,6 @@ contract('Tcr', async function (accounts) {
 
         const deployedTokenAddress = await tcrInstance.token();
         tokenInstance = await token.at(deployedTokenAddress);
-        const initialBalance = await tokenInstance.balanceOf(factoryInstance.address);
-        console.log("Initial balance: " + initialBalance);
-        console.log("Initial balance: " + initialBalance);
-
         
     });
 
