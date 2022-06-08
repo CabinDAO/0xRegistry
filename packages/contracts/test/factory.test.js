@@ -1,3 +1,5 @@
+const { getTrailingCommentRanges } = require("typescript");
+
 var factory = artifacts.require("TcrFactory");
 var registry = artifacts.require("TcrRegistry");
 var token = artifacts.require("Token");
@@ -14,7 +16,7 @@ contract('Tcr Factory', async function (accounts) {
     });
 
     it('should create a new TCR', async () => {
-        let deployTx = await factoryInstance.createTcr(
+        const deployTx = await factoryInstance.createTcr(
             "DemoTCR",
             tokenInstance.address,
             [
@@ -23,14 +25,9 @@ contract('Tcr Factory', async function (accounts) {
                 60
             ]
           );
-        const deployedName = deployTx.logs[0].args.name;
         const deployedAddress = deployTx.logs[0].args.tcr;
-        
-        let registerTx = await registryInstance.registerTcr(deployedName, deployedAddress);
-        const registerAddress = registerTx.logs[0].args.tcr;
-        assert(deployedName == registerName, "Deployed TCR name does not match registry");
-        assert(deployedAddress == registerAddress, "Deployed TCR address does not match registry");
-
+        const registryAddress = await registryInstance.getTcr("DemoTCR");
+        assert.equal(deployedAddress, registryAddress, "Deployed TCR address does not match registry");
     }
     );
         
