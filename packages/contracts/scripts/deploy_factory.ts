@@ -1,5 +1,7 @@
 import { ethers } from "hardhat";
 
+
+
 async function main() {
     const registryAddress = "0x2E8891AA76743ee96547AcB764a69b87872423f8";
 
