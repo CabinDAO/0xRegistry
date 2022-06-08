@@ -10,22 +10,23 @@ contract('Tcr Factory', async function (accounts) {
     let registryInstance;
 
     before(async () => {
-        tokenInstance = await token.new("DemoToken", "DEMO", 21000000);
         registryInstance = await registry.new();
         factoryInstance = await factory.new(registryInstance.address);
     });
 
     it('should create a new TCR', async () => {
         const deployTx = await factoryInstance.createTcr(
+            "DemoToken",
+            "DEMO",
+            21000000,
             "DemoTCR",
-            tokenInstance.address,
             [
                 100,
                 300, 
                 60
             ]
           );
-        const deployedAddress = deployTx.logs[0].args.tcr;
+        const deployedAddress = deployTx.logs[1].args.tcr;
         const registryAddress = await registryInstance.getTcr("DemoTCR");
         assert.equal(deployedAddress, registryAddress, "Deployed TCR address does not match registry");
     }
