@@ -1,5 +1,6 @@
 import { Wrapper, Button, Heading } from "@cabindao/topo";
-import Box from "./Box"
+import Link from "next/link";
+import Box from "./Box";
 
 export default function PageHeader() {
   return (
@@ -9,7 +10,9 @@ export default function PageHeader() {
       paddingBottom: "$6"
       }}>
       <Wrapper>
-        <Heading as="h3">0xRegistry</Heading>
+        <Link href="/">
+          <Heading as="a" css={{ display: "inline-block", mt: "$4", cursor: "pointer" }}>0xRegistry</Heading>
+        </Link>
       </Wrapper>
     </Box>
   )
