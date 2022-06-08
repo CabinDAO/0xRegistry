@@ -3,7 +3,7 @@ var token = artifacts.require("Token");
 contract('Token', async function (accounts) {
     let tokenInstance;
     before(async () => {
-        tokenInstance = await token.deployed();
+        tokenInstance = await token.new("DemoToken", "DEMO", 21000000);
     });
 
     it("should init", async function () {

@@ -1,5 +1,7 @@
 var tcr = artifacts.require("Tcr");
 var token = artifacts.require("Token");
+var registry = artifacts.require("TcrRegistry");
+var factory = artifacts.require("TcrFactory");
 
 async function increaseTime(duration) {
     const id = Date.now()
@@ -24,17 +26,32 @@ async function increaseTime(duration) {
 }
 
 contract('Tcr', async function (accounts) {
-    let tcrInstance;
     let tokenInstance;
+    let registryInstance;
+    let factoryInstance;
+    let tcrInstance;
+
     before(async () => {
-        tcrInstance = await tcr.deployed();
-        const tokenAddress = await tcrInstance.token();
-        tokenInstance = await token.at(tokenAddress);
+        tokenInstance = await token.new("DemoToken", "DEMO", 21000000);
+        registryInstance = await registry.new();
+        factoryInstance = await factory.new(registryInstance.address);
+
+        let deployTx = await factoryInstance.createTcr(
+            "DemoTCR",
+            tokenInstance.address,
+            [
+                100,
+                300, 
+                60
+            ]
+          );
+        const deployedAddress = deployTx.logs[0].args.tcr;
+        tcrInstance = await tcr.at(deployedAddress);
     });
 
     it("should init name", async function () {
         const name = await tcrInstance.name();
-        assert.equal(name, "DemoTcr", "name didnt initialize");
+        assert.equal(name, "DemoTCR", "name didnt initialize");
     });
 
     it("should init token", async function () {

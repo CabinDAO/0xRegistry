@@ -8,18 +8,20 @@ contract('Tcr Factory', async function (accounts) {
     let registryInstance;
 
     before(async () => {
-        tokenInstance = await token.new("DemoToken", "DEMO", new web3.utils.BN('21000000'));
+        tokenInstance = await token.new("DemoToken", "DEMO", 21000000);
         registryInstance = await registry.new();
         factoryInstance = await factory.new(registryInstance.address);
     });
 
     it('should create a new TCR', async () => {
         let deployTx = await factoryInstance.createTcr(
-            "Neighborhood TCR",
+            "DemoTCR",
             tokenInstance.address,
-            [ethers.utils.parseEther("0.02"), 
-            ethers.BigNumber.from("300"), 
-            ethers.BigNumber.from("60")]
+            [
+                100,
+                300, 
+                60
+            ]
           );
         const deployedName = deployTx.logs[0].args.name;
         const deployedAddress = deployTx.logs[0].args.tcr;
