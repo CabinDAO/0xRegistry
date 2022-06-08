@@ -28,7 +28,7 @@ contract('Tcr Factory', async function (accounts) {
         
         let registerTx = await registryInstance.registerTcr(deployedName, deployedAddress);
         const registerAddress = registerTx.logs[0].args.tcr;
-
+        assert(deployedName == registerName, "Deployed TCR name does not match registry");
         assert(deployedAddress == registerAddress, "Deployed TCR address does not match registry");
 
     }
