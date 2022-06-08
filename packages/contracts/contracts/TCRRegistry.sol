@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.14;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract TcrRegistry is Ownable {
+contract TcrRegistry {
 
     mapping (string => address) public tcrs;
     event TcrRegistered(string indexed name, address indexed tcr);
 
-    function registerTcr(string memory _name, address _address) onlyOwner public {
+    function registerTcr(string memory _name, address _address) public {
         tcrs[_name] = _address;
         emit TcrRegistered(_name, _address);
     }
