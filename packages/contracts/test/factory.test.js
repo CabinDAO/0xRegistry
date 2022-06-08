@@ -4,12 +4,15 @@ var token = artifacts.require("Token");
 
 contract('Tcr Factory', async function (accounts) {
     let tokenInstance;
+    let factoryInstance;
+    let registryInstance;
+
     before(async () => {
         tokenInstance = await token.new("DemoToken", "DEMO", new web3.utils.BN('21000000'));
         registryInstance = await registry.new();
         factoryInstance = await factory.new(registryInstance.address);
     });
-    //It should create a new TCR and register it in the registry
+
     it('should create a new TCR', async () => {
         let deployTx = await factoryInstance.createTcr(
             "Neighborhood TCR",
