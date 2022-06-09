@@ -1,9 +1,10 @@
 import Link from "next/link";
-import PageTitle from "@components/PageTitle";
 import { Input, Button, Heading, Text } from "@cabindao/topo";
+import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
+import ButtonRow from "@components/ButtonRow";
 
-const Registry = (props) => {
+const Registry = ({currentStep}) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Registry</PageTitle>
@@ -16,34 +17,54 @@ const Registry = (props) => {
             erat, sed diam voluptua.
           </Text>
         </Box>
-        <Box css={{width: "50%"}}>
-          <Input
-            name="Application Deposit"
-            label="Application Deposit"
-            placeholder="Deposit Amount"
-              helpText={"Sit consequuntur libero aspernatur voluptatem magnam error."}
-          ></Input>
+        <Box>
+          <Box css={{ display: "flex", mb: "$10" }}>
+            <Box css={{ flex: 1, mr: "$5" }}>
+              <Input
+                label="Application Deposit"
+                helpText={
+                  "Sit consequuntur libero aspernatur voluptatem magnam error."
+                }
+                placeholder="Deposit ammount"
+              ></Input>
+            </Box>
+            <Box css={{ flex: 1, ml: "$5" }}>
+              <Input
+                label="Application Length"
+                helpText={
+                  "Sit consequuntur libero aspernatur voluptatem magnam error."
+                }
+                placeholder="Length of application period"
+              ></Input>
+            </Box>
+          </Box>
+          <Box css={{ width: "50%", pr: "$5" }}>
+            <Input
+              label="Challenge Length"
+              helpText={
+                "Sit consequuntur libero aspernatur voluptatem magnam error."
+              }
+              placeholder="Length of challenge period"
+            ></Input>
+          </Box>
         </Box>
       </Box>
-      <Box
-        css={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "$20",
+      <ButtonRow
+        prev={{
+          text: "Back",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 5 },
+          },
         }}
-      >
-        <Link href="/registry/new" passHref>
-          <Button type="link" as="a">
-            Back
-          </Button>
-        </Link>
-
-        <Link href="/registry/new" passHref>
-          <Button type="primary" as="a" tone="wheat">
-            Next
-          </Button>
-        </Link>
-      </Box>
+        next={{
+          text: "Next",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 7 },
+          },
+        }}
+      />
     </Box>
   );
 };

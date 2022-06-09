@@ -1,9 +1,10 @@
 import Link from "next/link";
-import PageTitle from "@components/PageTitle";
 import { Label, Button, Heading, Text } from "@cabindao/topo";
+import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
+import ButtonRow from "@components/ButtonRow";
 
-const RegistryConfirmation = (props) => {
+const RegistryConfirmation = ({ currentStep }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Registry</PageTitle>
@@ -48,6 +49,21 @@ const RegistryConfirmation = (props) => {
           This will launch a new token contract, which costs gas.
         </Text>
       </Box>
+      <ButtonRow
+        prev={{
+          text: "Back",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 6 },
+          },
+        }}
+        next={{
+          text: "Next",
+          href: {
+            pathname: "/",
+          },
+        }}
+      />
       <Box
         css={{
           display: "flex",

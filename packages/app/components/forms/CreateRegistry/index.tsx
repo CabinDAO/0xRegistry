@@ -7,21 +7,98 @@ import Metadata from "./Metadata";
 import Token from "./Token";
 import TokenConfirmation from "./Token/Confirmation";
 import Registry from "./Registry";
-import RegistryDeposit from "./Registry/Deposit";
-import RegistryApplication from "./Registry/Application";
-import RegistryChallenge from "./Registry/Challenge";
 import RegistryConfirmation from "./Registry/Confirmation";
 
-const CreateRegistryForm = (props) => {
+const CreateRegistryForm = () => {
   const router = useRouter();
   const [state, dispatch] = useReducer(registryReducer, initialState);
 
-  console.log(router.query);
+  console.log("step: ", router.query.step);
 
+  return (
+    <Box>{renderFormStep(parseInt(router.query.step), state, dispatch)}</Box>
+  );
+};
+
+function renderFormStep(step = null, state, dispatch) {
   let formStep;
-  switch (router.query.name) {
-    case "metadata":
-      formStep = <Metadata></Metadata>;
+  switch (step) {
+    case 1:
+      formStep = <Metadata currentStep={step}></Metadata>;
+      break;
+    case 2:
+      formStep = (
+        <Overview
+          state={state}
+          dispatch={dispatch}
+          description={
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+          }
+          currentStep={1}
+          steps={["Registry Metadata", "Governance Token", "Registry"]}
+          next={{
+            text: "Next",
+            href: {
+              pathname: "/registry/new",
+              query: { step: 3 }
+            }
+          }}
+          prev={{
+            text: "Back",
+            href: {
+              pathname: "/registry/new",
+              query: { step: 1 }
+            }
+          }}
+        />
+      );
+      break;
+    case 3:
+      formStep = <Token currentStep={step} />;
+      break;
+    case 4:
+      formStep = <TokenConfirmation currentStep={step} />
+      break;
+    case 5:
+      formStep = (
+        <Overview
+          state={state}
+          dispatch={dispatch}
+          description={
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+          }
+          currentStep={2}
+          steps={["Registry Metadata", "Governance Token", "Registry"]}
+          next={{
+            text: "Next",
+            href: {
+              pathname: "/registry/new",
+              query: { step: 6 }
+            }
+          }}
+          prev={{
+            text: "Back",
+            href: {
+              pathname: "/registry/new",
+              query: { step: 4 }
+            }
+          }}
+        />
+      );
+      break;
+    case 6:
+      formStep = (
+        <Registry
+          currentStep={step}
+        />
+      )
+      break;
+    case 7:
+      formStep = (
+        <RegistryConfirmation
+          currentStep={step}
+        />
+      )
       break;
     default:
       formStep = (
@@ -33,12 +110,17 @@ const CreateRegistryForm = (props) => {
           }
           currentStep={0}
           steps={["Registry Metadata", "Governance Token", "Registry"]}
-          next="metadata"
+          next={{
+            text: "Next",
+            href: {
+              pathname: "/registry/new",
+              query: {step: 1}
+            }
+          }}
         />
       );
   }
-
-  return <Box>{formStep}</Box>;
-};
+  return formStep;
+}
 
 export default CreateRegistryForm;

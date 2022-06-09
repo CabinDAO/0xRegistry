@@ -1,9 +1,10 @@
 import Link from "next/link";
-import PageTitle from "@components/PageTitle";
 import { Input, Button, Heading, Text } from "@cabindao/topo";
+import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
+import ButtonRow from "@components/ButtonRow";
 
-const RegistryDeposit = (props) => {
+const RegistryDeposit = ({ currentStep }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Registry</PageTitle>
@@ -27,25 +28,22 @@ const RegistryDeposit = (props) => {
           ></Input>
         </Box>
       </Box>
-      <Box
-        css={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "$20",
+      <ButtonRow
+        prev={{
+          text: "Back",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 5 },
+          },
         }}
-      >
-        <Link href="/registry/new" passHref>
-          <Button type="link" as="a">
-            Back
-          </Button>
-        </Link>
-
-        <Link href="/registry/new" passHref>
-          <Button type="primary" as="a" tone="wheat">
-            Next
-          </Button>
-        </Link>
-      </Box>
+        next={{
+          text: "Next",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 7 },
+          },
+        }}
+      />
     </Box>
   );
 };

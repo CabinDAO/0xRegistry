@@ -1,7 +1,8 @@
 import Link from "next/link";
-import PageTitle from "@components/PageTitle";
 import { Label, Button, Heading, Text } from "@cabindao/topo";
+import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
+import ButtonRow from "@components/ButtonRow";
 
 const TokenConfirmation = (props) => {
   return (
@@ -48,6 +49,24 @@ const TokenConfirmation = (props) => {
           This will launch a new token contract, which costs gas.
         </Text>
       </Box>
+
+      <ButtonRow
+        prev={{
+          text: "Back",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 3 },
+          },
+        }}
+        next={{
+          text: "Next",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 5 },
+          },
+        }}
+      />
+
       <Box
         css={{
           display: "flex",

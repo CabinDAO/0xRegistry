@@ -1,20 +1,22 @@
 import Link from "next/link";
-import PageTitle from "@components/PageTitle";
 import { Button, Heading, Text, styled } from "@cabindao/topo";
-import Box from "@components/Box";
 import { iRegistryFormState } from "./reducer";
+import PageTitle from "@components/PageTitle";
+import Box from "@components/Box";
+import ButtonRow, { RowButton } from "@components/ButtonRow";
 
 interface iOverviewProps {
   state: iRegistryFormState;
   steps: [string];
   currentStep: number;
   description: string;
-  next: string;
+  next: RowButton;
+  prev?: RowButton;
 }
 
 let Step = styled("li");
 
-const Overview = ({ description, steps, currentStep, next }) => {
+const Overview = ({ description, steps, currentStep, next, prev }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Overview</PageTitle>
@@ -37,25 +39,12 @@ const Overview = ({ description, steps, currentStep, next }) => {
           })}
         </ol>
       </Box>
-      <Box
-        css={{
-          display: "flex",
-          flexDirection: "row-reverse",
-          marginTop: "$20",
-        }}
-      >
-        <Link
-          href={{
-            pathname: "/registry/new",
-            query: { step: next },
-          }}
-          passHref
-        >
-          <Button type="primary" as="a" tone="wheat">
-            Next
-          </Button>
-        </Link>
-      </Box>
+
+      {currentStep > 0 ? (
+        <ButtonRow prev={prev} next={next} />
+      ) : (
+        <ButtonRow next={next} />
+      )}
     </Box>
   );
 };

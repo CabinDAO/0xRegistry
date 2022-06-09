@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { Input, Button, Heading, Text } from "@cabindao/topo";
 import PageTitle from "@components/PageTitle";
 import FileUpload from "@components/FileUpload";
-import { Input, Button, Heading, Text } from "@cabindao/topo";
 import Box from "@components/Box";
+import ButtonRow from "@components/ButtonRow"
 
-const RegistryMetadata = (props) => {
+const RegistryMetadata = ({ currentStep }) => {
+  console.log(currentStep)
+
   return (
     <Box>
       <PageTitle weight="light">New Registry: Metadata</PageTitle>
@@ -30,25 +33,22 @@ const RegistryMetadata = (props) => {
           </Box>
         </Box>
       </Box>
-      <Box
-        css={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "$20",
+      <ButtonRow
+        prev={{
+          text: "Back",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 0 },
+          }
         }}
-      >
-        <Link href="/registry/new" passHref>
-          <Button type="link" as="a">
-            Back
-          </Button>
-        </Link>
-
-        <Link href="/registry/new" passHref>
-          <Button type="primary" as="a" tone="wheat">
-            Next
-          </Button>
-        </Link>
-      </Box>
+        next={{
+          text: "Next",
+          href: {
+            pathname: "/registry/new",
+            query: { step: 2 },
+          }
+        }}
+      />
     </Box>
   );
 };
