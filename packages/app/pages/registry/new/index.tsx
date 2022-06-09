@@ -1,13 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Layout from "@components/Layout";
+import CreateRegistryForm from "@forms/CreateRegistry"
 
 const NewRegistry: NextPage = () => {
   return (
     <Layout>
-      <h1>New Registry Overview</h1>
+      <Head>
+        <title>New Registry: Overview</title>
+      </Head>
+      <CreateRegistryForm />
     </Layout>
   );
 };
 
-export default NewRegistry
+export default NewRegistry;

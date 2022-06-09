@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link"
+import Link from "next/link";
 import { Heading, Button, Text } from "@cabindao/topo";
 import Layout from "@components/Layout";
 import Box from "@components/Box";
