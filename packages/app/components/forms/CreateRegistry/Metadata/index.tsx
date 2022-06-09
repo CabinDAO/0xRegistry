@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Input, Button, Heading, Text } from "@cabindao/topo";
+import { actions } from "../reducer"
 import PageTitle from "@components/PageTitle";
 import FileUpload from "@components/FileUpload";
 import Box from "@components/Box";
-import ButtonRow from "@components/ButtonRow"
+import ButtonRow from "@components/ButtonRow";
 
-const RegistryMetadata = ({ currentStep }) => {
-  console.log(currentStep)
+const RegistryMetadata = ({ currentStep, state, dispatch }) => {
 
   return (
     <Box>
@@ -26,10 +26,19 @@ const RegistryMetadata = ({ currentStep }) => {
               label="Registry Name"
               required
               placeholder="Name of your registry"
+              value={state.meta.name}
+              onChange={e => dispatch({ type: actions.UPDATE_REGISTRY_NAME, payload: e.target.value })}
             ></Input>
           </Box>
           <Box>
-            <FileUpload label="Registry Logo"></FileUpload>
+            <FileUpload
+              label="Registry Logo"
+              accept="image/png, image/jpeg"
+              // input:file can't be controlled component
+              //value={state.meta.logo}
+              //onChange={e => console.log(e.target.files[0])}
+              onChange={e => dispatch({ type: actions.UPDATE_LOGO_PATH, payload: e.target.files[0] })}
+            />
           </Box>
         </Box>
       </Box>
@@ -39,14 +48,14 @@ const RegistryMetadata = ({ currentStep }) => {
           href: {
             pathname: "/registry/new",
             query: { step: 0 },
-          }
+          },
         }}
         next={{
           text: "Next",
           href: {
             pathname: "/registry/new",
             query: { step: 2 },
-          }
+          },
         }}
       />
     </Box>

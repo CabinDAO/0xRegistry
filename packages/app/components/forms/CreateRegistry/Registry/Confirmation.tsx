@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Label, Button, Heading, Text } from "@cabindao/topo";
+import { formatNumber } from "@utils/format";
 import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
 import ButtonRow from "@components/ButtonRow";
 
-const RegistryConfirmation = ({ currentStep }) => {
+const RegistryConfirmation = ({ state }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Registry</PageTitle>
@@ -23,20 +24,22 @@ const RegistryConfirmation = ({ currentStep }) => {
               <Heading css={{ mb: 0 }} as="h3">
                 Application Deposit
               </Heading>
-              <Text weight="light">100 $DAO</Text>
+              <Text weight="light">
+                {state.registry.deposit} {`$${state.token.symbol}`}
+              </Text>
             </Box>
             <Box css={{ flex: 1, ml: "$5" }}>
               <Heading css={{ mb: 0 }} as="h3">
                 Application Length
               </Heading>
-              <Text weight="light">7 Days</Text>
+              <Text weight="light">{state.registry.application} Days</Text>
             </Box>
           </Box>
           <Box css={{ width: "50%", pr: "$5" }}>
             <Heading css={{ mb: 0 }} as="h3">
               Challenge Length
             </Heading>
-            <Text weight="light">7 Days</Text>
+            <Text weight="light">{state.registry.challenge} Days</Text>
           </Box>
         </Box>
       </Box>

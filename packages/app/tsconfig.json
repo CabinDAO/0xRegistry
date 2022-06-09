@@ -5,7 +5,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
       "@components/*": ["components/*"],
-      "@forms/*": ["components/forms/*"]
+      "@forms/*": ["components/forms/*"],
+      "@utils/*": ["utils/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

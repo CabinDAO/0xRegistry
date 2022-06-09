@@ -29,6 +29,7 @@ const Overview = ({ description, steps, currentStep, next, prev }) => {
           {steps.map((step, i) => {
             return (
               <Step
+                key={i}
                 css={{
                   textDecoration: i < currentStep ? "line-through" : "",
                 }}

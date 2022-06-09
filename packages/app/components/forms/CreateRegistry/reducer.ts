@@ -2,12 +2,12 @@ export const initialState = {
   step: "",
   meta: {
     name: "",
-    logo: "",
+    logo: {},
   },
   token: {
     name: "",
     symbol: "",
-    supply: "",
+    supply: null
   },
   registry: {
     deposit: null,
@@ -15,6 +15,17 @@ export const initialState = {
     challenge: null,
   },
 };
+
+export const actions = {
+  UPDATE_REGISTRY_NAME: "UPDATE_REGISTRY_NAME",
+  UPDATE_LOGO_PATH: "UPDATE_LOGO_PATH",
+  UPDATE_TOKEN_NAME: "UPDATE_TOKEN_NAME",
+  UPDATE_TOKEN_SYMBOL: "UPDATE_TOKEN_SYMBOL",
+  UPDATE_TOKEN_SUPPLY: "UPDATE_TOKEN_SUPPLY",
+  UPDATE_REGISTRY_DEPOSIT: "UPDATE_REGISTRY_DEPOSIT",
+  UPDATE_REGISTRY_APPLICATION: "UPDATE_REGISTRY_APPLICATION",
+  UPDATE_REGISTRY_CHALLENGE: "UPDATE_REGISTRY_CHALLENGE",
+}
 
 export interface iRegistryFormState {
   step: string;
@@ -42,9 +53,70 @@ type Registry = {
 
 export function registryReducer(state, action) {
   switch (action.type) {
-    case "case":
-      break;
-
+    case actions.UPDATE_REGISTRY_NAME:
+      return {
+        ...state,
+        meta: {
+          ...state.meta,
+          name: action.payload,
+        }
+      }
+    case actions.UPDATE_LOGO_PATH:
+      return {
+        ...state,
+        meta: {
+          ...state.meta,
+          logo: action.payload
+        }
+      }
+    case actions.UPDATE_TOKEN_NAME:
+      return {
+        ...state,
+        token: {
+          ...state.token,
+          name: action.payload
+        }
+      }
+    case actions.UPDATE_TOKEN_SYMBOL:
+      return {
+        ...state,
+        token: {
+          ...state.token,
+          symbol: action.payload
+        }
+      }
+    case actions.UPDATE_TOKEN_SUPPLY:
+      return {
+        ...state,
+        token: {
+          ...state.token,
+          supply: action.payload
+        }
+      }
+    case actions.UPDATE_REGISTRY_DEPOSIT:
+      return {
+        ...state,
+        registry: {
+          ...state.registry,
+          deposit: action.payload
+        }
+      }
+    case actions.UPDATE_REGISTRY_APPLICATION:
+      return {
+        ...state,
+        registry: {
+          ...state.registry,
+          application: action.payload
+        }
+      }
+    case actions.UPDATE_REGISTRY_CHALLENGE:
+      return {
+        ...state,
+        registry: {
+          ...state.registry,
+          challenge: action.payload
+        }
+      }
     default:
   }
 }

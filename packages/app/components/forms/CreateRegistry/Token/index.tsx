@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Input, Button, Heading, Text } from "@cabindao/topo";
+import { actions } from "../reducer"
 import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
 import ButtonRow from "@components/ButtonRow";
 
-const Token = ({ currentStep }) => {
+const Token = ({ currentStep, state, dispatch }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Token</PageTitle>
@@ -26,6 +27,11 @@ const Token = ({ currentStep }) => {
                   "Sit consequuntur libero aspernatur voluptatem magnam error."
                 }
                 placeholder="Token name"
+                value={state.token.name}
+                onChange={e => dispatch({
+                  type: actions.UPDATE_TOKEN_NAME,
+                  payload: e.target.value
+                })}
               ></Input>
             </Box>
             <Box css={{ flex: 1, ml: "$5" }}>
@@ -35,16 +41,28 @@ const Token = ({ currentStep }) => {
                   "Sit consequuntur libero aspernatur voluptatem magnam error."
                 }
                 placeholder="Token Symbol"
+                value={state.token.symbol}
+                onChange={e => dispatch({
+                  type: actions.UPDATE_TOKEN_SYMBOL,
+                  payload: e.target.value
+                })}
               ></Input>
             </Box>
           </Box>
           <Box css={{ width: "50%", pr: "$5" }}>
             <Input
+              type="number"
+              min="0"
               label="Supply"
               helpText={
                 "Sit consequuntur libero aspernatur voluptatem magnam error."
               }
               placeholder="Token Supply"
+                value={state.token.supply}
+                onChange={e => dispatch({
+                  type: actions.UPDATE_TOKEN_SUPPLY,
+                  payload: e.target.value
+                })}
             ></Input>
           </Box>
         </Box>

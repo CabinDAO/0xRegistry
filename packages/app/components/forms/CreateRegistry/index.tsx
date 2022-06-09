@@ -13,7 +13,8 @@ const CreateRegistryForm = () => {
   const router = useRouter();
   const [state, dispatch] = useReducer(registryReducer, initialState);
 
-  console.log("step: ", router.query.step);
+  //console.log("step: ", router.query.step);
+  console.log("state: ", state)
 
   return (
     <Box>{renderFormStep(parseInt(router.query.step), state, dispatch)}</Box>
@@ -24,7 +25,13 @@ function renderFormStep(step = null, state, dispatch) {
   let formStep;
   switch (step) {
     case 1:
-      formStep = <Metadata currentStep={step}></Metadata>;
+      formStep = (
+        <Metadata
+          currentStep={step}
+          state={state}
+          dispatch={dispatch}
+        ></Metadata>
+      );
       break;
     case 2:
       formStep = (
@@ -40,24 +47,30 @@ function renderFormStep(step = null, state, dispatch) {
             text: "Next",
             href: {
               pathname: "/registry/new",
-              query: { step: 3 }
-            }
+              query: { step: 3 },
+            },
           }}
           prev={{
             text: "Back",
             href: {
               pathname: "/registry/new",
-              query: { step: 1 }
-            }
+              query: { step: 1 },
+            },
           }}
         />
       );
       break;
     case 3:
-      formStep = <Token currentStep={step} />;
+      formStep = <Token currentStep={step} state={state} dispatch={dispatch} />;
       break;
     case 4:
-      formStep = <TokenConfirmation currentStep={step} />
+      formStep = (
+        <TokenConfirmation
+          currentStep={step}
+          state={state}
+          dispatch={dispatch}
+        />
+      );
       break;
     case 5:
       formStep = (
@@ -73,32 +86,32 @@ function renderFormStep(step = null, state, dispatch) {
             text: "Next",
             href: {
               pathname: "/registry/new",
-              query: { step: 6 }
-            }
+              query: { step: 6 },
+            },
           }}
           prev={{
             text: "Back",
             href: {
               pathname: "/registry/new",
-              query: { step: 4 }
-            }
+              query: { step: 4 },
+            },
           }}
         />
       );
       break;
     case 6:
       formStep = (
-        <Registry
-          currentStep={step}
-        />
-      )
+        <Registry currentStep={step} state={state} dispatch={dispatch} />
+      );
       break;
     case 7:
       formStep = (
         <RegistryConfirmation
           currentStep={step}
+          state={state}
+          dispatch={dispatch}
         />
-      )
+      );
       break;
     default:
       formStep = (
@@ -114,8 +127,8 @@ function renderFormStep(step = null, state, dispatch) {
             text: "Next",
             href: {
               pathname: "/registry/new",
-              query: {step: 1}
-            }
+              query: { step: 1 },
+            },
           }}
         />
       );

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Label, Button, Heading, Text } from "@cabindao/topo";
+import {formatNumber} from "@utils/format"
 import PageTitle from "@components/PageTitle";
 import Box from "@components/Box";
 import ButtonRow from "@components/ButtonRow";
 
-const TokenConfirmation = (props) => {
+const TokenConfirmation = ({ state }) => {
   return (
     <Box>
       <PageTitle weight="light">New Registry: Token</PageTitle>
@@ -23,20 +24,20 @@ const TokenConfirmation = (props) => {
               <Heading css={{ mb: 0 }} as="h3">
                 Token Name
               </Heading>
-              <Text weight="light">The Whole DAO Catalog</Text>
+              <Text weight="light">{state.token.name}</Text>
             </Box>
             <Box css={{ flex: 1, ml: "$5" }}>
               <Heading css={{ mb: 0 }} as="h3">
                 Token Symbol
               </Heading>
-              <Text weight="light">DAO</Text>
+              <Text weight="light">{state.token.symbol}</Text>
             </Box>
           </Box>
           <Box css={{ width: "50%", pr: "$5" }}>
             <Heading css={{ mb: 0 }} as="h3">
               Token Supply
             </Heading>
-            <Text weight="light">1,000,000</Text>
+            <Text weight="light">{formatNumber( state.token.supply )}</Text>
           </Box>
         </Box>
       </Box>
