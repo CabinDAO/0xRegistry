@@ -32,21 +32,26 @@ contract('Tcr', async function (accounts) {
     let tcrInstance;
 
     before(async () => {
-        tokenInstance = await token.new("DemoToken", "DEMO", 21000000);
         registryInstance = await registry.new();
         factoryInstance = await factory.new(registryInstance.address);
 
-        let deployTx = await factoryInstance.createTcr(
+        const deployTx = await factoryInstance.createTcr(
+            "DemoToken",
+            "DEMO",
+            21000000,
             "DemoTCR",
-            tokenInstance.address,
             [
                 100,
                 300, 
                 60
             ]
           );
-        const deployedAddress = deployTx.logs[0].args.tcr;
-        tcrInstance = await tcr.at(deployedAddress);
+        const deployedTcrAddress = deployTx.logs[1].args.tcr;
+        tcrInstance = await tcr.at(deployedTcrAddress);
+
+        const deployedTokenAddress = await tcrInstance.token();
+        tokenInstance = await token.at(deployedTokenAddress);
+        
     });
 
     it("should init name", async function () {
