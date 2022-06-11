@@ -1,17 +1,37 @@
-import Head from "next/head";
-import { Wrapper, Button, styled } from "@cabindao/topo";
+import Link from "next/link";
+import { Wrapper, Button, Text, styled, Footer } from "@cabindao/topo";
 import Box from "./Box";
 import PageHeader from "./PageHeader";
 
+const CabinLink = styled("a", {
+  textDecoration: "underline",
+  "&:hover": {
+    color: "$sprout",
+  },
+});
+
 export default function Layout(props) {
   return (
-    <Box>
+    <Box css={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <PageHeader />
       <Wrapper>
-        <Box css={{ pt: "$10" }}>
-          {props.children}
-        </Box>
+        <Box css={{ pt: "$10",pb: "$20" }}>{props.children}</Box>
       </Wrapper>
+      <Box css={{ mt: "auto" }}>
+        <Footer>
+          <Text mono>
+            Made with care by{" "}
+            <CabinLink
+              href="https://creatorcabins.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cabin
+            </CabinLink>
+            .
+          </Text>
+        </Footer>
+      </Box>
     </Box>
   );
 }

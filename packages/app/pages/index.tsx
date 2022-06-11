@@ -2,10 +2,16 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Heading, Button, Text } from "@cabindao/topo";
+import { useAccount } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Layout from "@components/Layout";
 import Box from "@components/Box";
 
 const Home: NextPage = () => {
+  const { data, isError, isLoading } = useAccount();
+
+  if (data) console.log("data: ", data);
+
   return (
     <Layout>
       <Head>
@@ -19,11 +25,18 @@ const Home: NextPage = () => {
           sed diam voluptua.
         </Text>
       </Box>
-      <Link href="/registry/new" passHref>
-        <Button type="primary" as="a" tone="wheat">
-          New Registry
-        </Button>
-      </Link>
+      {data ? (
+        <Link href="/registry/new" passHref>
+          <Button type="primary" as="a" tone="wheat">
+            New Registry
+          </Button>
+        </Link>
+      ): (
+      <Box>
+        <Text weight="light" css={{fontStyle: "italic"}}>Connect your wallet to get started.</Text>
+        <ConnectButton />
+      </Box>
+      )}
     </Layout>
   );
 };
